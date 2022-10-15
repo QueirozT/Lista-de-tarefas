@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/grid.css">
+    <link rel="stylesheet" href="../static/css/content.css">
+    <link rel="stylesheet" href="../static/css/form.css">
+
+    <style>
+    main {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 5px;
+    }
+    .buttons > button {
+        margin: 5px;
+    }
+    </style>
+
+    <title>Lista de Tarefas</title>
+</head>
+<body>
+    <div class="template-grid">
+        <header>
+            <div class="container">
+                <div class="terminal-nav">
+                    <div class="terminal-logo" id="header">
+                        <div class="logo terminal-prompt">
+                            <a class="no-style" href="/assets/template">Olá Pessoa</a>
+                        </div>
+                    </div>
+                    <nav class="terminal-menu">
+                        <ul>
+                            <li>
+                                <a class="menu-item" href="/assets/template/login.html">Logar</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="/assets/template/perfil.html">Perfil</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" target="_blank" href="https://github.com/QueirozT">Repo</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <form id="tela-login" action="" method="post" >
+                <h1>Editar Perfil</h1>
+                <input type="text" name="username" placeholder="Apelido">
+                <input type="email" name="email" placeholder="E-mail" required="">
+                <input type="password" name="password" placeholder="Nova Senha" required="">
+                <input type="password" name="password2" placeholder="Repetir a Senha" required="">
+                <input id="submit" type="submit" value="Atualizar">
+            </form>
+        </main>
+    </div>
+</body>
+</html>

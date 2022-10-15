@@ -1,0 +1,110 @@
+.template-grid {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-column-gap: 40px;
+    grid-row-gap: 5em;
+    min-height: 100vh;
+    grid-template-areas: "header header header"
+                         "main main main"
+                         "lista fazer feito"
+                         "footer footer footer";
+
+}
+
+main {
+  grid-area: main;
+}
+
+header {
+  grid-area: header;
+}
+
+.lista {
+  grid-area: lista;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 25vh;
+}
+
+.fazer {
+  grid-area: fazer;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 25vh;
+}
+
+.feito {
+  grid-area: feito;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 25vh;
+}
+
+footer {
+  grid-area: footer;
+}
+
+
+@media (max-width: 1300px) {
+  .template-grid {
+    grid-template-areas: "header header header"
+                         "main main main"
+                         "lista lista lista"
+                         "fazer fazer fazer" 
+                         "feito feito feito"
+                         "footer footer footer";
+
+  }
+  main {
+    width: 50vw;
+  }
+  .lista {
+    width: 70vw;
+    min-height: 0;
+  }
+  
+  .fazer {
+    width: 70vw;
+    min-height: 0;
+  }
+  
+  .feito {
+    width: 70vw;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  main {
+    width: 70vw;
+  }
+  .lista {
+    width: 80vw;
+  }
+  
+  .fazer {
+    width: 80vw;
+  }
+  
+  .feito {
+    width: 80vw;
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    width: 80vw;
+  }
+  .lista {
+    width: 90vw;
+  }
+  
+  .fazer {
+    width: 90vw;
+  }
+  
+  .feito {
+    width: 90vw;
+  }
+}
