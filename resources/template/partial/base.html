@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/grid.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/content.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+    <style>
+    main {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 5px;
+    }
+    .buttons > button {
+        margin: 5px;
+    }
+    </style>
+
+    <title>Lista de Tarefas {% if title %} - {{ title }}{% endif %}</title>
+</head>
+<body>
+    <div class="template-grid">
+        <header>
+            <div class="container">
+                <div class="terminal-nav">
+                    <div class="terminal-logo" id="header">
+                        <div class="logo terminal-prompt">
+                            <a class="no-style" href="{{ url_for('tarefas.index') }}">{% if current_user.is_anonymous %} Seja bem vindo! {% else %} Olá {{ current_user.username }} {% endif %}</a>
+                        </div>
+                    </div>
+                    <nav class="terminal-menu">
+                        <ul>
+                            {% if current_user.is_anonymous %}
+                                {% if request.endpoint != 'auth.login' %}
+                                    <li>
+                                        <a class="menu-item" href="{{ url_for('auth.login') }}">Login</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a class="menu-item" href="{{ url_for('auth.register') }}">Registrar</a>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li>
+                                    <a href="menu-item" href="{{ url_for('auth.logout') }}"></a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="{{ url_for('auth.profile') }}">Perfil</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a class="menu-item" target="_blank" href="https://github.com/QueirozT">Repo</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        {% block content %}
+        {% endblock %}
+
+        {% if request.endpoint == 'tarefas.index' %}
+        <footer>
+            <p>
+                Desenvolvido por <a target="_blank" href="https://github.com/QueirozT">Tiago</a>
+            </p>
+        </footer>
+        {% endif %}
+    </div>
+
+    {% if request.endpoint == 'tarefas.index' %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% endif %}
+</body>
+</html>
