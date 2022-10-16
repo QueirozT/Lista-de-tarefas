@@ -4,11 +4,29 @@
 <main>
     <form id="tela-login" action="" method="post" >
         <h1>Editar Perfil</h1>
-        <input type="text" name="username" placeholder="Apelido">
-        <input type="email" name="email" placeholder="E-mail" required="">
-        <input type="password" name="password" placeholder="Nova Senha" required="">
-        <input type="password" name="password2" placeholder="Repetir a Senha" required="">
-        <input id="submit" type="submit" value="Atualizar">
+        {{ form.hidden_tag() }}
+        <!-- <input type="text" name="username" placeholder="Apelido"> -->
+        {{ form.username(size=64, placeholder="Usuário") }}
+        {% for error in form.username.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="email" name="email" placeholder="E-mail" required=""> -->
+        {{ form.email(size=120, placeholder="E-mail") }}
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="password" name="password" placeholder="Nova Senha" required=""> -->
+        {{ form.password(size=32, placeholder="Nova Senha") }}
+        {% for error in form.password.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="password" name="password2" placeholder="Repetir a Senha" required=""> -->
+        {{ form.password2(size=32, placeholder="Repetir a Senha") }}
+        {% for error in form.password2.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input id="submit" type="submit" value="Atualizar"> -->
+        {{ form.submit(id='submit') }}
     </form>
 </main>
 {% endblock %}
