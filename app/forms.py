@@ -12,8 +12,8 @@ from app.models import User
 class EditProfileForm(FlaskForm):
     username = StringField('Usuário')
     email = StringField('E-mail', validators=[Email()])
-    password = StringField('Nova Senha')
-    password2 = StringField(
+    password = PasswordField('Nova Senha')
+    password2 = PasswordField(
         'Repetir a Senha', validators=[EqualTo('password')]
     )
     submit = SubmitField('Atualizar')
