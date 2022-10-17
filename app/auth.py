@@ -67,7 +67,8 @@ def profile():
     if form.validate_on_submit():
         current_user.username = form.username.data.strip()
         current_user.email = form.email.data
-        current_user.set_password(form.password.data)
+        if form.password.data:
+            current_user.set_password(form.password.data)
         current_app.db.session.commit()
         flash('Suas alterações foram salvas!')
         return redirect(url_for('auth.profile'))
