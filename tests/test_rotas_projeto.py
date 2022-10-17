@@ -1,7 +1,5 @@
 from flask import url_for
 
-from app.models import User, db
-
 
 def test_rota_register_deve_retornar_302_quando_criar_uma_nova_conta(client):
     data = {
