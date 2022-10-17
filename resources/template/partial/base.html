@@ -51,19 +51,26 @@
                                 {% endif %}
                             {% else %}
                                 <li>
-                                    <a href="menu-item" href="{{ url_for('auth.logout') }}"></a>
+                                    <a class="menu-item" href="{{ url_for('auth.logout') }}">Sair</a>
                                 </li>
                                 <li>
                                     <a class="menu-item" href="{{ url_for('auth.profile') }}">Perfil</a>
                                 </li>
                             {% endif %}
                             <li>
-                                <a class="menu-item" target="_blank" href="https://github.com/QueirozT">Repo</a>
+                                <a class="menu-item" target="_blank" href="https://github.com/QueirozT/Lista-de-tarefas">Repo</a>
                             </li>
                         </ul>
                     </nav>
                 </div>
             </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
         </header>
 
         {% block content %}

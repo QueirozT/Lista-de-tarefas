@@ -16,6 +16,16 @@ form#tela-login h1 {
     font-size: 3rem;
 }
 
+form#tela-login span, .alert {
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px;
+    margin: 15px auto;
+    font-size: 20px;
+    text-align: center;
+}
+
 form#tela-login input {
     display: flex;
     flex-direction: column;

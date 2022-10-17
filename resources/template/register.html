@@ -3,11 +3,29 @@
 {% block content %}
 <main>
     <form id="tela-login" action="" method="post" >
+        {{ form.hidden_tag() }}
         <h1>Registrar</h1>
-        <input type="email" name="email" placeholder="E-mail" required="">
-        <input type="password" name="password" placeholder="Senha" required="">
-        <input type="password" name="password2" placeholder="Repetir a senha" required="">
-        <input id="submit" type="submit" value="Registrar">
+        {{ form.username(size=32, placeholder="Usuário") }}
+        {% for error in form.username.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="email" name="email" placeholder="E-mail" required=""> -->
+        {{ form.email(size=120, placeholder="E-mail") }}
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="password" name="password" placeholder="Senha" required=""> -->
+        {{ form.password(size=32, placeholder="Senha") }}
+        {% for error in form.password.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input type="password" name="password2" placeholder="Repetir a senha" required=""> -->
+        {{ form.password2(size=32, placeholder="Repetir a senha") }}
+        {% for error in form.password2.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <!-- <input id="submit" type="submit" value="Registrar"> -->
+        {{ form.submit(id='submit') }}
     </form>
 </main>
 {% endblock %}
