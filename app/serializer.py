@@ -22,4 +22,4 @@ class TarefaSchema(ma.SQLAlchemyAutoSchema):
 
     @validates('id')
     def validate_id(self, value):
-        raise ValidationError('Não envia o campo ID.')
+        raise ValidationError('Dont send the ID field.')
