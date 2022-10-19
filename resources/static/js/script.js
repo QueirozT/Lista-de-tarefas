@@ -124,15 +124,15 @@ function ListarTarefas() {
         .then((response) => response.json())
         .then((data) => {
     
-            for (obj in data) {
+            data.forEach((key) => {
                 InserirModelo(
-                    data[obj].id,
-                    data[obj].title,
-                    data[obj].description,
-                    data[obj].type,
-                    data[obj].priority
+                    key.id,
+                    key.title,
+                    key.description,
+                    key.type,
+                    key.priority
                 )
-            }
+            }) 
         })
         .catch((error) => {
             console.error("Error:", error);
