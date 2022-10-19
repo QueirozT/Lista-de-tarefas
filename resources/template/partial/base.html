@@ -32,40 +32,9 @@
 <body>
     <div class="template-grid">
         <header>
-            <div class="container">
-                <div class="terminal-nav">
-                    <div class="terminal-logo" id="header">
-                        <div class="logo terminal-prompt">
-                            <a class="no-style" href="{{ url_for('tarefas.index') }}">{% if current_user.is_anonymous %} Seja bem vindo! {% else %} Olá {{ current_user.username }} {% endif %}</a>
-                        </div>
-                    </div>
-                    <nav class="terminal-menu">
-                        <ul>
-                            {% if current_user.is_anonymous %}
-                                {% if request.endpoint != 'auth.login' %}
-                                    <li>
-                                        <a class="menu-item" href="{{ url_for('auth.login') }}">Login</a>
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a class="menu-item" href="{{ url_for('auth.register') }}">Registrar</a>
-                                    </li>
-                                {% endif %}
-                            {% else %}
-                                <li>
-                                    <a class="menu-item" href="{{ url_for('auth.logout') }}">Sair</a>
-                                </li>
-                                <li>
-                                    <a class="menu-item" href="{{ url_for('auth.profile') }}">Perfil</a>
-                                </li>
-                            {% endif %}
-                            <li>
-                                <a class="menu-item" target="_blank" href="https://github.com/QueirozT/Lista-de-tarefas">Repo</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            
+            {% include 'partial/_nav.html' %}
+
             {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
