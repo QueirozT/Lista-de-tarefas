@@ -52,6 +52,7 @@ h6 {
 }
 
 a {
+    font-size: 12px;
     cursor:pointer;
     color:var(--font-color);
     text-decoration:none
@@ -909,11 +910,11 @@ figure>figcaption {
     font-weight:700
 }
 
-footer > p, a{
-    font-size: 12px;
+footer p, footer a{
+    font-size: 10px;
     text-align: center;
     text-decoration: none;
-    color: var(--font-color);
+    color: var(--secondary-color);
 }
 footer a:hover {
     background-color: var(--font-color);
