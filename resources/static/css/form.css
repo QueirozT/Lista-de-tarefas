@@ -69,6 +69,9 @@ form#tela-login input#submit:focus {
     main {
         width: 40vw;
     }
+    form#tela-login {
+        padding: 0;
+    }
 }
 @media (max-width: 1000px) {
     main {
