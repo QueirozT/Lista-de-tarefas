@@ -284,10 +284,10 @@ document.querySelector('#submit').addEventListener('click', (e) => {
         data.priority
     )
 
-    title.value = ''
-    title.placeholder = ''
-    description.value = ''
-    description.placeholder = ''
+    title.value = null
+    title.removeAttribute('placeholder')
+    description.value = null
+    description.removeAttribute('placeholder')
     priority.checked = false
     })
     .catch((error) => {
