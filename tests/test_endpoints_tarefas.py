@@ -8,7 +8,7 @@ def test_rota_create_deve_retornar_302_quando_um_usuario_for_invalido(client):
     json = {
         'title': 'Teste de rota',
         'description': 'Testando a rota de criação',
-        'type': 'list',
+        'type': 'lista',
         'priority': True,
     }
     response = client.post(url_for('tarefas.create'), json=json)
@@ -26,12 +26,12 @@ def test_rota_create_deve_retornar_201_quando_criar_um_recurso(client):
     json = {
         'title': 'Teste de rota',
         'description': 'Testando a rota de criação',
-        'type': 'list',
+        'type': 'lista',
         'priority': True,
     }
     response = client.post(url_for('tarefas.create'), json=json)
     
-    esperado = {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'list', 'user_id': 1}
+    esperado = {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}
     
     assert response.status_code == 201
     assert response.json == esperado
@@ -39,7 +39,7 @@ def test_rota_create_deve_retornar_201_quando_criar_um_recurso(client):
 
 def test_rota_create_deve_retornar_400_quando_receber_um_json_incorreto(client):
     json = {
-        'title': 'Teste de rota', 'type': 'list', 'priority': True,
+        'title': 'Teste de rota', 'type': 'lista', 'priority': True,
     }
 
     response = client.post(url_for('tarefas.create'), json=json)
@@ -50,10 +50,62 @@ def test_rota_create_deve_retornar_400_quando_receber_um_json_incorreto(client):
     assert response.json == esperado
 
 
+def test_rota_create_deve_retornar_400_quando_receber_um_titulo_vazio(client):
+    json = {
+        'title': '', 'description': 'teste', 'type': 'lista', 'priority': True
+    }
+
+    response = client.post(url_for('tarefas.create'), json=json)
+
+    esperado = {'error': {'title': ['Title is required.']}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_create_deve_retornar_400_quando_receber_uma_descricao_vazia(client):
+    json = {
+        'title': 'teste', 'description': '', 'type': 'lista', 'priority': True
+    }
+
+    response = client.post(url_for('tarefas.create'), json=json)
+
+    esperado = {'error': {'description': ['Description is required.']}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_create_deve_retornar_400_quando_receber_um_type_vazio(client):
+    json = {
+        'title': 'xpto', 'description': 'todo', 'type': '', 'priority': True
+    }
+
+    response = client.post(url_for('tarefas.create'), json=json)
+
+    esperado = {'error': {'type': ['Type is required.']}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_create_deve_retornar_400_quando_receber_um_type_inesperado(client):
+    json = {
+        'title': 'xpto', 'description': 'todo', 'type': 'teste', 'priority': True
+    }
+
+    response = client.post(url_for('tarefas.create'), json=json)
+
+    esperado = {'error': {'type': ['Type must be lista, fazer or feito.']}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
 def test_rota_collect_deve_retornar_200_e_uma_lista_de_jsons(client):
     response = client.get(url_for('tarefas.collect'))
 
-    esperado = [{'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'list', 'user_id': 1}]
+    esperado = [{'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}]
 
     assert response.status_code == 200
     assert response.json == esperado
@@ -65,7 +117,7 @@ def test_rota_update_deve_retornar_201_e_o_json_atualizado(client):
         json={'title': 'Novo Título'}
     )
 
-    esperado = {'description': 'Testando a rota de criação','id': 1, 'priority': True, 'title': 'Novo Título', 'type': 'list', 'user_id': 1}
+    esperado = {'description': 'Testando a rota de criação','id': 1, 'priority': True, 'title': 'Novo Título', 'type': 'lista', 'user_id': 1}
 
     assert response.status_code == 201
     assert response.json == esperado
@@ -112,7 +164,7 @@ def test_rota_delete_deve_retornar_400_quando_não_encontrar_um_recurso(client):
 
 
 def test_rota_delete_deve_retornar_204_e_remover_o_recurso_correto(client):
-    json = {'title': 'Teste de rota', 'description': 'Testando a rota de criação', 'type': 'list', 'priority': True}
+    json = {'title': 'Teste de rota', 'description': 'Testando a rota de criação', 'type': 'lista', 'priority': True}
 
     client.post(url_for('tarefas.create'), json=json)
     client.post(url_for('tarefas.create'), json=json)
