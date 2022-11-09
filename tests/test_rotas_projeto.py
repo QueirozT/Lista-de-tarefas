@@ -72,19 +72,25 @@ def test_rota_login_deve_retornar_302_quando_os_dados_forem_invalidos(client):
     assert response.request.path == url_for('auth.login')
 
 
-def test_rota_index_deve_retornar_302_quando_nao_estiver_autenticado(client):
-    response = client.get(url_for('tarefas.index'))
+def test_rota_dashboard_deve_retornar_302_quando_nao_estiver_autenticado(client):
+    response = client.get(url_for('tarefas.dashboard'))
 
     assert response.status_code == 302
-    response.request.path == url_for('tarefas.index')
+    response.request.path == url_for('tarefas.dashboard')
 
 
-def test_rota_index_deve_retornar_200_quando_estiver_autenticado(client):
+def test_rota_dashboard_deve_retornar_200_quando_estiver_autenticado(client):
     client.post(url_for('auth.login'), data={
         'email': 'teste@email.com', 'password': 'senha'
     })    
 
+    response = client.get(url_for('tarefas.dashboard'))
+
+    assert response.status_code == 200
+    response.request.path == url_for('tarefas.dashboard')
+
+
+def test_rota_index_deve_retornar_200_quando_acessada(client):
     response = client.get(url_for('tarefas.index'))
 
     assert response.status_code == 200
-    response.request.path == url_for('tarefas.index')
