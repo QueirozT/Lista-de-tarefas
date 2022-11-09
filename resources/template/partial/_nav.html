@@ -21,9 +21,9 @@
                     <li>
                         <a class="menu-item" href="{{ url_for('auth.logout') }}">Sair</a>
                     </li>
-                    {% if request.endpoint == 'auth.profile' %}
+                    {% if request.endpoint == 'auth.profile' or request.endpoint == 'tarefas.index' %}
                         <li>
-                            <a class="menu-item" href="{{ url_for('tarefas.index') }}">Dashboard</a>
+                            <a class="menu-item" href="{{ url_for('tarefas.dashboard') }}">Dashboard</a>
                         </li>
                     {% else %}
                         <li>
