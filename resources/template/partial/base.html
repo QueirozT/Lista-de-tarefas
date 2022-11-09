@@ -27,6 +27,10 @@
     }
     </style>
 
+    {% if request.endpoint == 'tarefas.index' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/snow.css') }}">
+    {% endif %}
+
     <title>Lista de Tarefas {% if title %} - {{ title }}{% endif %}</title>
 </head>
 <body>
@@ -47,17 +51,21 @@
         {% block content %}
         {% endblock %}
 
-        {% if request.endpoint == 'tarefas.index' %}
+        {% if request.endpoint == 'tarefas.dashboard' %}
         <footer>
             <p>
-                Desenvolvido por <a target="_blank" href="https://github.com/QueirozT">Tiago</a>
+                Desenvolvido por <a target="_blank" href="https://github.com/QueirozT">QueirozT</a>
             </p>
         </footer>
         {% endif %}
     </div>
 
-    {% if request.endpoint == 'tarefas.index' %}
+    {% if request.endpoint == 'tarefas.dashboard' %}
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% endif %}
+
+    {% if request.endpoint == 'tarefas.index' %}
+        <script src="{{ url_for('static', filename='js/snow.js') }}"></script>
     {% endif %}
 </body>
 </html>
