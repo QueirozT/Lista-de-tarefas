@@ -1,54 +1,18 @@
 {% extends "partial/base.html" %}
 
 {% block content %}
+
 <main>
-    <form>
-        <fieldset>
-        <legend>Lista de Tarefas</legend>
-        <div class="form-group">
-            <label for="terefa">Nome da tarefa</label>
-            <input id="title" type="text" name="tarefa" required="">
-        </div>
-
-        <div class="form-group">
-            <label for="tarea">Descrição da tarefa</label>
-            <textarea id="descricao" name="tarea" rows="5" cols="30" required=""></textarea>
-        </div>
-        
-        <div class="form-group nowrap">
-            <label for="check">Prioridade?</label>
-            <input id="priority" type="checkbox" name="check">
-        </div>
-
-        <button id="submit" type="button" class="btn btn-primary btn-block">Criar tarefa</button>
-        </fieldset>
-    </form>
+    <h1>Olá {% if current_user.is_authenticated %} {{ current_user.username }} {% else %} Visitante {% endif %} &#x1F44B;</h1> 
+    <p>
+        Este é um projeto de código aberto e de fácil utilização, criado com o objetivo de te ajudar a organizar suas tarefas.
+    </p>
+    <p>
+        Fique à vontade para conhecer e ajudar a melhorar este projeto. Todo o código está disponível no <a href="https://github.com/QueirozT/Lista-de-tarefas" target="_blank">Github</a>.
+    </p>
+    <p>
+        Espero que goste e que consiga organizar seus objetivos com mais facilidade.
+    </p>
 </main>
 
-<div class="lista">
-    <fieldset>
-        <legend>Tarefas a fazer</legend>
-        <div id="todo" class="terminal-timeline">
-
-        </div>
-    </fieldset>
-</div>
-
-<div class="fazer">
-    <fieldset>
-        <legend>Fazendo</legend>
-        <div id="doing" class="terminal-timeline">
-
-        </div>
-    </fieldset>
-</div>
-
-<div class="feito">
-    <fieldset>
-        <legend>Feito</legend>
-        <div id="done" class="terminal-timeline">
-
-        </div>
-    </fieldset>
-</div>
 {% endblock %}
