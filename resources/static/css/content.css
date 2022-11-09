@@ -4,7 +4,7 @@
     --global-space:10px;
     --font-stack:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
     --mono-font-stack:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-    --background-color:#000;
+    --background-color:#131622;
     --page-width:60em;
     --font-color:#ffffff;
     --invert-font-color:#000;
@@ -38,7 +38,8 @@ body {
     margin:0;
     font-family:var(--font-stack);
     word-wrap:break-word;
-    background-color:var(--background-color)
+    /* background-color:var(--background-color) */
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
 }
 
 .logo,

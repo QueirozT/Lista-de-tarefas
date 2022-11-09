@@ -11,9 +11,14 @@ bp_tarefas = Blueprint('tarefas', __name__)
 
 @bp_tarefas.route('/')
 @bp_tarefas.route('/index')
-@login_required
 def index():
-    return render_template('index.html', title='Minhas Tarefas')
+    return render_template('index.html')
+
+
+@bp_tarefas.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', title='Minhas Tarefas')
 
 
 @bp_tarefas.route('/create', methods=['POST'])

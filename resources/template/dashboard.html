@@ -1,0 +1,54 @@
+{% extends "partial/base.html" %}
+
+{% block content %}
+<main>
+    <form>
+        <fieldset>
+        <legend>Lista de Tarefas</legend>
+        <div class="form-group">
+            <label for="terefa">Nome da tarefa</label>
+            <input id="title" type="text" name="tarefa" required="">
+        </div>
+
+        <div class="form-group">
+            <label for="tarea">Descrição da tarefa</label>
+            <textarea id="descricao" name="tarea" rows="5" cols="30" required=""></textarea>
+        </div>
+        
+        <div class="form-group nowrap">
+            <label for="check">Prioridade?</label>
+            <input id="priority" type="checkbox" name="check">
+        </div>
+
+        <button id="submit" type="button" class="btn btn-primary btn-block">Criar tarefa</button>
+        </fieldset>
+    </form>
+</main>
+
+<div class="lista">
+    <fieldset>
+        <legend>Tarefas a fazer</legend>
+        <div id="todo" class="terminal-timeline">
+
+        </div>
+    </fieldset>
+</div>
+
+<div class="fazer">
+    <fieldset>
+        <legend>Fazendo</legend>
+        <div id="doing" class="terminal-timeline">
+
+        </div>
+    </fieldset>
+</div>
+
+<div class="feito">
+    <fieldset>
+        <legend>Feito</legend>
+        <div id="done" class="terminal-timeline">
+
+        </div>
+    </fieldset>
+</div>
+{% endblock %}
