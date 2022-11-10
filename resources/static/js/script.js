@@ -241,6 +241,26 @@ document.querySelector('#submit').addEventListener('click', (e) => {
     priority = document.querySelector('#priority')
     msg = "Este campo não pode ficar vazio"
 
+    if (title.value.trim() == '' | description.value.trim() == '') {
+        if (title.value.trim() == '' & description.value.trim() == '') {
+            title.placeholder = msg
+            description.placeholder = msg
+            title.value = null
+            description.value = null
+        }
+        else {
+            if (title.value.trim() == '') {
+                title.placeholder = msg
+                title.value = null
+            }
+            else {
+                description.placeholder = msg
+                description.value = null
+            }
+        }
+        return
+    }
+
     if (title.validity.valueMissing | description.validity.valueMissing) {
         if (title.validity.valueMissing & description.validity.valueMissing) {
             title.placeholder = msg
@@ -260,8 +280,8 @@ document.querySelector('#submit').addEventListener('click', (e) => {
     // #######################
 
     const data = { 
-        'title': title.value, 
-        'description': description.value,
+        'title': title.value.trim(), 
+        'description': description.value.trim(),
         'type': 'lista',
         'priority': priority.checked
     };
