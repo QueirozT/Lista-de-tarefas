@@ -26,11 +26,13 @@ class TarefaSchema(ma.SQLAlchemyAutoSchema):
 
     @validates('title')
     def validate_title(self, value):
+        value = value.strip()
         if not value or value is None:
             raise ValidationError('Title is required.')
 
     @validates('description')
     def validate_description(self, value):
+        value = value.strip()
         if not value or value is None:
             raise ValidationError('Description is required.')
 
