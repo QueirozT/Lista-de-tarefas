@@ -1,7 +1,7 @@
 neve();
 
 function neve() {
-  for (i = 1; i <= 198; i++){
+  for (i = 1; i <= 50; i++){
     let snow = document.createElement('div');
     snow.classList.add('snow')
     
