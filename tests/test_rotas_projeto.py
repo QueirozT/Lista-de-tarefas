@@ -1,5 +1,7 @@
 from flask import url_for
 
+from app.models import User
+
 
 def test_rota_register_deve_retornar_302_quando_criar_uma_nova_conta(client):
     data = {
@@ -94,3 +96,47 @@ def test_rota_index_deve_retornar_200_quando_acessada(client):
     response = client.get(url_for('tarefas.index'))
 
     assert response.status_code == 200
+
+
+def test_rota_get_token_deve_retornar_200_e_o_token_quando_dados_forem_validos(client):
+    json = {'email': 'teste@email.com', 'password': '123'}
+
+    response = client.post(url_for('auth.get_token'), json=json)
+
+    user = User.verify_jwt_token(response.json['token'])
+
+    assert response.status_code == 200
+    assert user.email == 'teste@email.com'
+
+
+def test_rota_register_deve_aceitar_json_para_registrar_usuarios(client):
+    json = {'username': 'xpto', 'email': 'xpto@email.com', 'password': '123'}
+
+    response = client.post(url_for('auth.register'), json=json)
+
+    esperado = {'email': 'xpto@email.com', 'username': 'xpto'}
+
+    assert response.status_code == 201
+    assert response.json == esperado
+
+
+def test_rota_register_deve_retornar_400_quando_receber_dados_incorretos(client):
+    json = {'username': 'xpto2', 'email': 'xpto2@email.com'}
+
+    response = client.post(url_for('auth.register'), json=json)
+
+    esperado = {'error': {'password': ['Missing data for required field.']}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_register_deve_retornar_400_quando_os_dados_ja_existirem(client):
+    json = {'username': 'xpto', 'email': 'xpto@email.com', 'password': '123'}
+
+    response = client.post(url_for('auth.register'), json=json)
+
+    esperado = {'error': {'email': ['Email already in use.'], 'username': ['Username already in use.']}}
+    
+    assert response.status_code == 400
+    assert response.json == esperado
