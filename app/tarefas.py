@@ -4,6 +4,7 @@ from flask import (
 from flask_login import current_user, login_required
 from flask_marshmallow import exceptions
 
+from app.authenticate import jwt_required
 from app.serializer import TarefaSchema
 
 bp_tarefas = Blueprint('tarefas', __name__)
@@ -22,7 +23,7 @@ def dashboard():
 
 
 @bp_tarefas.route('/create', methods=['POST'])
-@login_required
+@jwt_required
 def create():
     ts = TarefaSchema()
     request.json.update(user_id=current_user.id)
@@ -37,7 +38,7 @@ def create():
 
 
 @bp_tarefas.route('/collect', methods=['GET'])
-@login_required
+@jwt_required
 def collect():
     ts = TarefaSchema(many=True)
     tarefas = current_user.tarefas.all()
@@ -45,7 +46,7 @@ def collect():
 
 
 @bp_tarefas.route('/update/<int:id>', methods=['PUT'])
-@login_required
+@jwt_required
 def update(id):
     ts = TarefaSchema()
     tarefa = current_user.tarefas.filter_by(id=id)
@@ -63,7 +64,7 @@ def update(id):
 
 
 @bp_tarefas.route('/delete/<int:id>', methods=['DELETE'])
-@login_required
+@jwt_required
 def delete(id):
     tarefa = current_user.tarefas.filter_by(id=id).delete()
     if tarefa:
