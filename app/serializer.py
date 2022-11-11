@@ -1,7 +1,7 @@
-from marshmallow import fields, validates, ValidationError
+from marshmallow import fields, validates, ValidationError, post_dump,  post_load
 from flask_marshmallow import Marshmallow
 
-from .models import Tarefas
+from .models import Tarefas, User
 
 ma = Marshmallow()
 
@@ -42,3 +42,38 @@ class TarefaSchema(ma.SQLAlchemyAutoSchema):
             raise ValidationError('Type is required.')
         elif value not in ['lista', 'fazer', 'feito']:
             raise ValidationError('Type must be lista, fazer or feito.')
+
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+
+    email = fields.Str(required=True)
+    username = fields.Str(required=True)
+    password = fields.Str(required=True)
+
+    @validates('email')
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email).first()
+        if user:
+            raise ValidationError('Email already in use.')
+
+    @validates('username')
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username).first()
+        if user:
+            raise ValidationError('Username already in use.')
+
+    @post_load
+    def make_user(self, data, **kwargs):
+        user = User(username=data.username, email=data.email)
+        user.set_password(kwargs['partial'])
+        return user
+
+    @post_dump
+    def show_user(self, data, **kwargs):
+        return {
+            'email': data['email'],
+            'username': data['username']
+        }

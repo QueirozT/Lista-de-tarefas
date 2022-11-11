@@ -1,6 +1,10 @@
+from flask import current_app
 from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from time import time
 from werkzeug.security import check_password_hash, generate_password_hash
+import jwt
+
 
 db = SQLAlchemy()
 
@@ -39,6 +43,22 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         """Verifica se a senha é válida"""
         return check_password_hash(self.password_hash, password)
+
+    def get_jwt_token(self, expires=600):
+        """Gera um token de usuário"""
+        return jwt.encode(
+            {'user_id': self.id, 'exp': time() + expires},
+            current_app.config['SECRET_KEY'], algorithm='HS256'
+        )
+
+    @staticmethod
+    def verify_jwt_token(token):
+        """Verifica se o token é válido"""
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])['user_id']
+        except:
+            return
+        return User.query.filter_by(id=id).first()
 
 
 class Tarefas(db.Model):

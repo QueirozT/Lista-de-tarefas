@@ -4,17 +4,20 @@ from flask_login import current_user, login_user, logout_user
 from app.models import User, db
 
 
-def test_rota_create_deve_retornar_302_quando_um_usuario_for_invalido(client):
+def test_rota_create_deve_retornar_403_quando_um_usuario_for_invalido(client):
     json = {
         'title': 'Teste de rota',
         'description': 'Testando a rota de criação',
         'type': 'lista',
         'priority': True,
     }
-    response = client.post(url_for('tarefas.create'), json=json)
 
-    assert response.status_code == 302
-    assert response.json == None
+    response = client.post(url_for('tarefas.create'), json=json)
+    
+    esperado = {'error': 'Access Denied'}
+
+    assert response.status_code == 403
+    assert response.json == esperado
 
 
 def test_rota_create_deve_retornar_201_quando_criar_um_recurso(client):
@@ -193,3 +196,132 @@ def test_rota_delete_deve_retornar_204_e_remover_o_recurso_correto(client):
     assert response.json == None
     assert tarefas_user2_antes.json != tarefas_user2_depois.json
     assert tarefas_user1_antes.json == tarefas_user1_depois.json
+
+
+def test_rota_create_deve_retornar_201_caso_o_token_seja_valido(client):
+    logout_user()
+    token = User.query.filter_by(username='teste').first().get_jwt_token()
+    
+    json = {
+        'title': 'Teste', 
+        'description': 'Testando a rota de criação', 
+        'type': 'lista', 
+        'priority': True
+    }
+    
+    response = client.post(url_for('tarefas.create'), json=json, headers={'Authorization': f'Bearer {token}'})
+
+    esperado = {'description': 'Testando a rota de criação','id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista', 'user_id': 1}
+
+    assert response.status_code == 201
+    assert response.json == esperado
+
+
+def test_rota_create_deve_retornar_403_caso_o_token_seja_invalido(client):
+    logout_user()
+    token = 'token inválido'
+    
+    json = {
+        'title': 'Teste', 
+        'description': 'Testando a rota de criação', 
+        'type': 'lista', 
+        'priority': True
+    }
+
+    response = client.post(url_for('tarefas.create'), json=json, headers={'Authorization': f'Bearer {token}'})
+    response2 = client.post(url_for('tarefas.create'), json=json, headers={'Authorization': token})
+
+    esperado = {'error': 'Invalid Token'}
+
+    assert response.status_code == 403
+    assert response.json == esperado
+
+    assert response2.status_code == 401
+    assert response2.json == esperado
+
+
+def test_collect_deve_retornar_200_caso_o_token_seja_valido(client):
+    logout_user()
+    token = User.query.filter_by(username='teste').first().get_jwt_token()
+    
+    response = client.get(url_for('tarefas.collect'), headers={'Authorization': f'Bearer {token}'})
+
+    esperado = [
+        {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1},
+        {'description': 'Testando a rota de criação', 'id': 2, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1},
+        {'description': 'Testando a rota de criação', 'id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista', 'user_id': 1}
+    ]
+
+    assert response.status_code == 200
+    assert response.json == esperado
+
+
+def test_collect_deve_retornar_401_e_um_erro_caso_o_token_seja_invalido(client):
+    logout_user()
+    token = User.query.filter_by(username='teste').first().get_jwt_token()
+    
+    response = client.get(url_for('tarefas.collect'), headers={'Authorization': token})
+
+    esperado = {'error': 'Invalid Token'}
+
+    assert response.status_code == 401
+    assert response.json == esperado
+
+
+def test_update_deve_retornar_201_quando_o_token_e_os_dados_forem_validos(client):
+    logout_user()
+    token = User.query.filter_by(username='teste').first().get_jwt_token()
+    
+    json = {'description': 'Testando a rota update'}
+
+    response = client.put(
+        url_for('tarefas.update', id=1), 
+        json=json, 
+        headers={'Authorization': f'Bearer {token}'}
+    )
+
+    esperado = {'description': 'Testando a rota update', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}
+
+    assert response.status_code == 201
+    assert response.json == esperado
+
+
+def test_update_deve_retornar_403_caso_nao_seja_passado_um_token(client):
+    logout_user()
+    json = {'description': 'Testando a rota update'}
+
+    response = client.put(url_for('tarefas.update', id=1), json=json)
+
+    esperado =  {'error': 'Access Denied'}
+
+    assert response.status_code == 403
+    assert response.json == esperado
+
+
+def test_rota_delete_deve_retornar_204_caso_o_token_seja_valido(client):
+    logout_user()
+
+    token = User.query.filter_by(username='teste').first().get_jwt_token()
+
+    response = client.delete(
+        url_for('tarefas.delete', id=1), 
+        headers={'Authorization': f'Bearer {token}'}
+    )
+
+    assert response.status_code == 204
+
+
+def test_rota_delete_deve_retornar_403_caso_o_token_seja_invalido(client):
+    logout_user()
+
+    token = 'Token invalido'
+
+    response = client.delete(
+        url_for('tarefas.delete', id=1), 
+        headers={'Authorization': f'Bearer {token}'}
+    )
+
+    esperado = {'error': 'Invalid Token'}
+
+    assert response.status_code == 403
+    assert response.json == esperado

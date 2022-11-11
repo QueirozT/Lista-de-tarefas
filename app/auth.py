@@ -1,13 +1,16 @@
 from flask import (
-    Blueprint, current_app, flash, redirect, render_template, request, url_for
+    Blueprint, current_app, flash, redirect, 
+    render_template, request, url_for, jsonify
 )
 from flask_login import current_user, login_required, login_user, logout_user
+from flask_marshmallow import exceptions
 from werkzeug.urls import url_parse
 
 from app.models import User
 from app.forms import (
     LoginForm, RegistrationForm, EditProfileForm
 )
+from app.serializer import UserSchema
 
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -45,9 +48,23 @@ def logout():
 
 @bp_auth.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.is_json:
+        us = UserSchema()
+        try:
+            user = us.load(
+                request.json, 
+                partial=request.json.get('password')
+            )
+        except exceptions.ValidationError as e:
+            return jsonify({'error': e.messages_dict}), 400
+        else:
+            current_app.db.session.add(user)
+            current_app.db.session.commit()
+            return us.jsonify(user), 201
+    
     if current_user.is_authenticated:
         return redirect(url_for('tarefas.index'))
-
+    
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data.strip(), email=form.email.data)
@@ -77,3 +94,17 @@ def profile():
         form.email.data = current_user.email
 
     return render_template('perfil.html', title='Editar Perfil', form=form)
+
+
+@bp_auth.route('/get-token', methods=["POST"])
+def get_token():
+    if current_user.is_authenticated:
+        return jsonify({'token': current_user.get_jwt_token()})
+    
+    email = request.json['email']
+    password = request.json['password']
+    user = User.query.filter_by(email=email).first()
+    if user is None or not user.check_password(password):
+        return jsonify({'error': 'Usuário ou senha inválidos'})
+    
+    return jsonify({'token': user.get_jwt_token()})
