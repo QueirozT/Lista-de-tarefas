@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .auth import bp_auth
 from .tarefas import bp_tarefas
+from .errors import bp_errors
 from .models import config as config_db
 from .serializer import config as config_ma
 
@@ -27,5 +28,6 @@ def create_app(Config):
 
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_tarefas)
+    app.register_blueprint(bp_errors)
     
     return app
