@@ -1,0 +1,13 @@
+{% extends "partial/base.html" %}
+
+{% block content %}
+
+    <main class="align-error">
+        <h1>{{ error }}</h1>
+    
+        <p>
+            <a href="{{ url_for('tarefas.index') }}">Voltar a página inicial</a>
+        </p>
+    </main>
+
+{% endblock %}
