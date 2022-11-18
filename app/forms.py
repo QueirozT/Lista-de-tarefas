@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (
-    StringField, PasswordField, SubmitField
+    BooleanField, PasswordField, StringField, SubmitField
 )
 from wtforms.validators import (
     DataRequired, EqualTo, Email, ValidationError
@@ -41,6 +41,7 @@ class EditProfileForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     password = PasswordField('Senha', validators=[DataRequired()])
+    remember_me = BooleanField('Lembrar?')
     submit = SubmitField('Entrar')
 
 
