@@ -64,6 +64,15 @@ form#tela-login input#submit:focus {
     cursor: pointer;
 }
 
+.lembrar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.lembrar > label, .lembrar > input:hover {
+    cursor: pointer;
+}
+
 
 @media (max-width: 1400px) {
     main {
