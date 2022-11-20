@@ -34,9 +34,27 @@ def test_rota_create_deve_retornar_201_quando_criar_um_recurso(client):
     }
     response = client.post(url_for('tarefas.create'), json=json)
     
-    esperado = {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}
+    esperado = {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista'}
     
     assert response.status_code == 201
+    assert response.json == esperado
+
+
+def test_rota_create_deve_retornar_400_quando_faltar_o_type_(client):
+    json = {
+        'title': 'Teste de rota',
+        'description': 'Testando a rota de criação',
+        'priority': False
+    }
+    response = client.post(url_for('tarefas.create'), json=json)
+    
+    esperado = {
+        "error": {
+            "type": ["Missing data for required field."]
+        }
+    }
+    
+    assert response.status_code == 400
     assert response.json == esperado
 
 
@@ -108,7 +126,7 @@ def test_rota_create_deve_retornar_400_quando_receber_um_type_inesperado(client)
 def test_rota_collect_deve_retornar_200_e_uma_lista_de_jsons(client):
     response = client.get(url_for('tarefas.collect'))
 
-    esperado = [{'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}]
+    esperado = [{'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista'}]
 
     assert response.status_code == 200
     assert response.json == esperado
@@ -120,8 +138,8 @@ def test_rota_update_deve_retornar_201_e_o_json_atualizado(client):
         json={'title': 'Novo Título'}
     )
 
-    esperado = {'description': 'Testando a rota de criação','id': 1, 'priority': True, 'title': 'Novo Título', 'type': 'lista', 'user_id': 1}
-
+    esperado = {'description': 'Testando a rota de criação','id': 1, 'priority': True, 'title': 'Novo Título', 'type': 'lista'}
+    
     assert response.status_code == 201
     assert response.json == esperado
 
@@ -144,7 +162,31 @@ def test_rota_uptade_deve_retornar_400_quando_receber_um_id_invalido(client):
         json={'title': 'xpto'}
     )
 
-    esperado = {'error': {'id': 2}}
+    esperado = {'error': {'2': 'Not Found'}}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_uptade_deve_retornar_400_quando_receber_um_id_no_json(client):
+    response = client.put(
+        url_for('tarefas.update', id=2), 
+        json={'id': 10}
+    )
+
+    esperado = {'error': "Dont send the ID field"}
+
+    assert response.status_code == 400
+    assert response.json == esperado
+
+
+def test_rota_uptade_deve_retornar_400_quando_receber_um_type_errado(client):
+    response = client.put(
+        url_for('tarefas.update', id=2), 
+        json={'type': 'xpto'}
+    )
+
+    esperado = {'error': "Type must be lista, fazer or feito"}
 
     assert response.status_code == 400
     assert response.json == esperado
@@ -160,8 +202,8 @@ def test_rota_delete_deve_retornar_204_quando_deletar_um_recurso(client):
 def test_rota_delete_deve_retornar_400_quando_não_encontrar_um_recurso(client):
     response = client.delete(url_for('tarefas.delete', id=0))
 
-    esperado = {'error': {'id': 0}}
-
+    esperado = {'error': {'0': 'Not Found'}}
+    
     assert response.status_code == 400
     assert response.json == esperado
 
@@ -211,7 +253,7 @@ def test_rota_create_deve_retornar_201_caso_o_token_seja_valido(client):
     
     response = client.post(url_for('tarefas.create'), json=json, headers={'Authorization': f'Bearer {token}'})
 
-    esperado = {'description': 'Testando a rota de criação','id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista', 'user_id': 1}
+    esperado = {'description': 'Testando a rota de criação','id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista'}
 
     assert response.status_code == 201
     assert response.json == esperado
@@ -247,9 +289,9 @@ def test_collect_deve_retornar_200_caso_o_token_seja_valido(client):
     response = client.get(url_for('tarefas.collect'), headers={'Authorization': f'Bearer {token}'})
 
     esperado = [
-        {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1},
-        {'description': 'Testando a rota de criação', 'id': 2, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1},
-        {'description': 'Testando a rota de criação', 'id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista', 'user_id': 1}
+        {'description': 'Testando a rota de criação', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista'},
+        {'description': 'Testando a rota de criação', 'id': 2, 'priority': True, 'title': 'Teste de rota', 'type': 'lista'},
+        {'description': 'Testando a rota de criação', 'id': 5, 'priority': True, 'title': 'Teste', 'type': 'lista'}
     ]
 
     assert response.status_code == 200
@@ -280,7 +322,7 @@ def test_update_deve_retornar_201_quando_o_token_e_os_dados_forem_validos(client
         headers={'Authorization': f'Bearer {token}'}
     )
 
-    esperado = {'description': 'Testando a rota update', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista', 'user_id': 1}
+    esperado = {'description': 'Testando a rota update', 'id': 1, 'priority': True, 'title': 'Teste de rota', 'type': 'lista'}
 
     assert response.status_code == 201
     assert response.json == esperado
