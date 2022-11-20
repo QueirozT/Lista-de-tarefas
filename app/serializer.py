@@ -43,6 +43,16 @@ class TarefaSchema(ma.SQLAlchemyAutoSchema):
         elif value not in ['lista', 'fazer', 'feito']:
             raise ValidationError('Type must be lista, fazer or feito.')
 
+    @post_dump
+    def show_user(self, data, **kwargs):
+        return {
+            'id': data['id'],
+            'title': data['title'],
+            'description': data['description'],
+            'type': data['type'],
+            'priority': data['priority'],
+        }
+
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
