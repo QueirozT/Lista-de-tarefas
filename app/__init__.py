@@ -3,6 +3,7 @@ from flask_babel import Babel
 from flask_migrate import Migrate
 from logging.handlers import SMTPHandler
 from pathlib import Path
+from flasgger import Swagger
 import logging
 
 from .auth import bp_auth
@@ -10,6 +11,7 @@ from .tarefas import bp_tarefas
 from .errors import bp_errors
 from .models import config as config_db
 from .serializer import config as config_ma
+from .flasgger import template, swagger_config
 
 
 migrate = Migrate()
@@ -31,6 +33,8 @@ def create_app(Config):
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_tarefas)
     app.register_blueprint(bp_errors)
+
+    Swagger(app, template=template, config=swagger_config)
 
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
