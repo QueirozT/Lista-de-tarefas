@@ -1,4 +1,4 @@
-# [Lista de Tarefas](https://lista-de-tarefas.queirozt.webredirect.org/apispec/)
+# [Lista de Tarefas](https://lista-de-tarefas.queirozt.webredirect.org)
 
 ### O que é?
 
