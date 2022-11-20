@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask import (
     Blueprint, current_app, flash, redirect, 
     render_template, request, url_for, jsonify
@@ -7,6 +8,7 @@ from flask_marshmallow import exceptions
 from werkzeug.urls import url_parse
 
 from app.models import User
+from app.flasgger import specs_get_token, specs_register
 from app.forms import (
     LoginForm, RegistrationForm, EditProfileForm
 )
@@ -47,20 +49,6 @@ def logout():
 
 @bp_auth.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.is_json:
-        us = UserSchema()
-        try:
-            user = us.load(
-                request.json, 
-                partial=request.json.get('password')
-            )
-        except exceptions.ValidationError as e:
-            return jsonify({'error': e.messages_dict}), 400
-        else:
-            current_app.db.session.add(user)
-            current_app.db.session.commit()
-            return us.jsonify(user), 201
-    
     if current_user.is_authenticated:
         return redirect(url_for('tarefas.index'))
     
@@ -95,15 +83,34 @@ def profile():
     return render_template('perfil.html', title='Editar Perfil', form=form)
 
 
-@bp_auth.route('/get-token', methods=["POST"])
-def get_token():
+@bp_auth.route('/api/register', methods=['POST'])
+@swag_from(specs_register)
+def api_register():
+    if request.is_json:
+        us = UserSchema()
+        try:
+            user = us.load(
+                request.json, 
+                partial=request.json.get('password')
+            )
+        except exceptions.ValidationError as e:
+            return jsonify({'error': e.messages_dict}), 400
+        else:
+            current_app.db.session.add(user)
+            current_app.db.session.commit()
+            return us.jsonify(user), 201
+
+
+@bp_auth.route('/api/get-token', methods=["POST"])
+@swag_from(specs_get_token)
+def api_get_token():
     if current_user.is_authenticated:
-        return jsonify({'token': current_user.get_jwt_token()})
+        logout_user()
     
     email = request.json['email']
     password = request.json['password']
     user = User.query.filter_by(email=email).first()
     if user is None or not user.check_password(password):
-        return jsonify({'error': 'Usuário ou senha inválidos'})
+        return jsonify({'error': 'Usuário ou senha inválidos'}), 400
     
-    return jsonify({'token': user.get_jwt_token()})
+    return jsonify({'token': user.get_jwt_token()}), 200
