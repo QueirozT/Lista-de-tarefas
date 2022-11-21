@@ -4,8 +4,8 @@ from pytest import fixture
 from app import create_app
 
 
-@fixture(scope='module')
-def client():
+@fixture(scope='function')
+def conf_test():
     app = create_app(TestConf)
     
     app.test_request_context().push()
