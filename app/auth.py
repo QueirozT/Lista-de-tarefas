@@ -111,6 +111,6 @@ def api_get_token():
     password = request.json['password']
     user = User.query.filter_by(email=email).first()
     if user is None or not user.check_password(password):
-        return jsonify({'error': 'Usuário ou senha inválidos'}), 400
+        return jsonify({'error': 'Invalid credentials'}), 400
     
     return jsonify({'token': user.get_jwt_token()}), 200

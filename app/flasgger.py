@@ -201,7 +201,7 @@ specs_get_token = {
                 "properties": {
                     "error": {
                         "type": "list",
-                        "example": "Usuário ou senha inválidos"
+                        "example": "Invalid credentials"
                     }
                 }
             }
