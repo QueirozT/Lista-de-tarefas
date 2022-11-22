@@ -8,11 +8,18 @@
         <nav class="terminal-menu">
             <ul>
                 {% if current_user.is_anonymous %}
-                    {% if request.endpoint != 'auth.login' %}
+                    {% if request.endpoint == 'auth.register' %}
                         <li>
                             <a class="menu-item" href="{{ url_for('auth.login') }}">Login</a>
                         </li>
+                    {% elif request.endpoint == 'auth.login' %}
+                        <li>
+                            <a class="menu-item" href="{{ url_for('auth.register') }}">Registrar</a>
+                        </li>
                     {% else %}
+                        <li>
+                            <a class="menu-item" href="{{ url_for('auth.login') }}">Login</a>
+                        </li>
                         <li>
                             <a class="menu-item" href="{{ url_for('auth.register') }}">Registrar</a>
                         </li>
