@@ -41,6 +41,10 @@ header {
   min-height: 25vh;
 }
 
+div > fieldset {
+  max-width: 32vw;
+}
+
 footer {
   grid-area: footer;
 }
@@ -72,6 +76,10 @@ footer {
   .feito {
     width: 70vw;
     min-height: 0;
+  }
+
+  div > fieldset {
+    max-width: fit-content;
   }
 }
 

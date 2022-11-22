@@ -31,6 +31,19 @@
     color:var(--invert-font-color)
 }
 
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background: #6e6868;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
 body {
     font-size:var(--global-font-size);
     color:var(--font-color);
