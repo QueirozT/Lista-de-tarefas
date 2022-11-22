@@ -65,11 +65,25 @@ form#tela-login input#submit:focus {
 }
 
 .lembrar {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 6px;
+  width: -moz-available;
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 10px;
+  outline: none;
+  background: var(--background-color);
 }
-.lembrar > label, .lembrar > input:hover {
+
+.left-content {
+    width: fit-content;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+.left-content > label, .left-content > input:hover {
     cursor: pointer;
 }
 

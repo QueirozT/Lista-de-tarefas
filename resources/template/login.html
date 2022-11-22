@@ -16,8 +16,11 @@
             <span style="color: red;">{{ error }}</span>
         {% endfor %}
         <div class="lembrar">
-            {{ form.remember_me.label(for="remember_me") }}
-            {{ form.remember_me() }}
+            <div class="left-content">
+                {{ form.remember_me.label(for="remember_me") }}
+                {{ form.remember_me() }}
+            </div>
+            <a href="{{ url_for('auth.register') }}">Ainda não tem uma conta?</a>
         </div>
         <!-- <input id="submit" type="submit" value="Entrar"> -->
         {{ form.submit(id='submit') }}
