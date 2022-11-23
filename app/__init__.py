@@ -3,7 +3,7 @@ from flask_babel import Babel
 from flask_migrate import Migrate
 from logging.handlers import SMTPHandler
 from pathlib import Path
-from flasgger import Swagger
+from flasgger import Swagger, LazyJSONEncoder
 import logging
 
 from .auth import bp_auth
@@ -34,6 +34,7 @@ def create_app(Config):
     app.register_blueprint(bp_tarefas)
     app.register_blueprint(bp_errors)
 
+    app.json_encoder = LazyJSONEncoder
     Swagger(app, template=template, config=swagger_config)
 
     if not app.debug and not app.testing:
