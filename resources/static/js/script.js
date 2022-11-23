@@ -78,7 +78,7 @@ function InserirModelo(id, header, description, type, priority) {
 
     switch (type) {
         case 'lista':
-            if (LISTA.innerHTML.match(id=id)) {
+            if (LISTA.innerHTML.match('id="'+id+'"')) {
                 return console.error('Modelo já existe')
             }
             
@@ -90,7 +90,7 @@ function InserirModelo(id, header, description, type, priority) {
             }
             break;
         case 'fazer':
-            if (FAZER.innerHTML.match(id=id)) {
+            if (FAZER.innerHTML.match('id="'+id+'"')) {
                 return console.error('Modelo já existe')
             }
             if (priority) {
@@ -101,7 +101,7 @@ function InserirModelo(id, header, description, type, priority) {
             }
             break;
         case 'feito':
-            if (FEITO.innerHTML.match(id=id)) {
+            if (FEITO.innerHTML.match('id="'+id+'"')) {
                 return console.error('Modelo já existe')
             }
             if (priority) {
