@@ -8,7 +8,14 @@ from app.models import User
 def jwt_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if request.environ.get('HTTP_REFERER') != url_for('tarefas.dashboard', _external=True):
+        scheme = 'http'
+        try:
+            if 'https' in request.environ.get('HTTP_REFERER'):
+                scheme = 'https'
+        except:
+            pass
+
+        if request.environ.get('HTTP_REFERER') != url_for('tarefas.dashboard', _scheme=scheme, _external=True):
             token = request.headers.get('Authorization')
 
             if not token:
