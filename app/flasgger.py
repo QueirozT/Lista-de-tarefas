@@ -1,3 +1,6 @@
+from flask import request
+from flasgger import LazyString
+
 template = {
     "swagger": "2.0",
     "info": {
@@ -12,11 +15,11 @@ template = {
         "termsOfService": "https://mit-license.org/",
         "version": "1.0.0"
     },
-    "host": 'lista-de-tarefas.queirozt.webredirect.org',
-    "schemes": [
-        "http",
-        "https"
-    ],
+    "host": LazyString(lambda: request.host),
+    "schemes": LazyString(lambda: 'https' if request.is_secure else 'http'),
+    'swaggerUiPrefix': LazyString(
+        lambda : request.environ.get('HTTP_X_SCRIPT_NAME', '')
+    ),
     "securityDefinitions": {
         "Bearer": {
             "type": "apiKey",
