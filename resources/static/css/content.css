@@ -607,6 +607,7 @@ textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus {
 
 header.name {
     font-weight: bold;
+    word-wrap: anywhere;
 }
 
 .btn {
